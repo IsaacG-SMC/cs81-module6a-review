@@ -49,6 +49,22 @@ Playlist.prototype.listSongs = function() {
   console.log("Songs:", this.songs.join(", ")); // retrieves a Playlist's songs array to print
 };
 
+// Adds song to the front of the playlist queue, and if currently playing a song,
+// starts playing the song just added
+// Takes in a songTitle string, and adds it to the front of a Playlist's songs array
+// If currentSong is pointing to a song already, then play the new front of songs array
+// by calling this Playlist's playFirst method
+Playlist.prototype.addToFront = function(songTitle) {
+  if(this.songs.length > 0){  // If songs array is not empty...
+    this.songs.unshift(songTitle);  // ...add songTitle to front of songs array and shift
+                                    // existing elements to the right by 1
+    if(this.currentSong != null){ // If a song is currently being played...
+      this.playFirst(); // ...call this instance's playFirst to play new front of songs array
+    }
+  } else {  // Else, playlist songs is empty,
+    this.addSong(songTitle);  // so we can just add the song to the playlist normally
+  }
+}
 
 let myMix = new Playlist("My Chill Mix"); // creates new instance of a Playlist object
 myMix.addSong("Lofi Study");  // myMix.songs[0] = "Lofi Study"
@@ -58,5 +74,9 @@ myMix.playFirst();  // "Now playing: Lofi Study"
 myMix.skipSong();   // Skipped! Now playing: Chillhop Beats
 myMix.listSongs();  // Playlist: My Chill Mix
                     // Songs: Chillhop Beats, Evening Jazz
+myMix.addToFront("Hello Polaris");  // myMix.songs [0] = "Hello Polaris"
+                                             //Now playing: Hello Polaris
+myMix.listSongs();  // Playlist: My Chill Mix
+                    // Songs: Hello Polaris, Chillhop Beats, Evening Jazz
 
   
